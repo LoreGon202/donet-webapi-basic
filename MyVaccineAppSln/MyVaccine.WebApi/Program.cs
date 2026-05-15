@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using MyVaccine.WebApi.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,3 +24,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+builder.Services.AddDbContext<MyVaccineAppDbContext>(options =>
+    options.UseSqlServer(
+        builder.Configuration.GetConnectionString("DefaultConnection")));
