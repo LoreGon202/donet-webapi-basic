@@ -24,7 +24,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-builder.Services.AddDbContext<MyVaccineAppDbContext>(options =>
-    options.UseSqlServer(
-        builder.Configuration.GetConnectionString("DefaultConnection")));

@@ -24,6 +24,7 @@ public class MyVaccineAppDbContext : DbContext
     public DbSet<FamilyGroup> FamilyGroups { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
+
     {
         base.OnModelCreating(modelBuilder);
 
@@ -94,3 +95,12 @@ public class MyVaccineAppDbContext : DbContext
         });
     }
 }
+
+
+//builder.Services.AddDbContext<MyVaccineAppDbContext>(options =>
+    //options.UseSqlServer(
+   //     builder.Configuration.GetConnectionString("DefaultConnection")));{
+ // "ConnectionStrings": {
+    //"DefaultConnection": "Server=localhost,1433;Database=MyVaccineDB;User Id=sa;Password=Abc.1234567;TrustServerCertificate=True;Encrypt=False;"
+  //}
+//}
