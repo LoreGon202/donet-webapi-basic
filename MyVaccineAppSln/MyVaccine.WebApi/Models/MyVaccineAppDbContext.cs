@@ -24,7 +24,6 @@ public class MyVaccineAppDbContext : DbContext
     public DbSet<FamilyGroup> FamilyGroups { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-
     {
         base.OnModelCreating(modelBuilder);
 
@@ -71,11 +70,35 @@ public class MyVaccineAppDbContext : DbContext
             entity.Property(v => v.Name)
                 .IsRequired()
                 .HasMaxLength(255);
+
+            entity.HasMany(v => v.Categories)
+                .WithMany(vc => vc.Vaccines)
+                .UsingEntity(j => j.ToTable("VaccineCategoryVaccines"));
         });
 
         // VaccineRecord
         modelBuilder.Entity<VaccineRecord>(entity =>
         {
+            entity.Property(vr => vr.AdministeredLocation)
+                .HasMaxLength(255);
+
+            entity.Property(vr => vr.AdministeredBy)
+                .HasMaxLength(255);
+
+            entity.HasOne(vr => vr.User)
+                .WithMany(u => u.VaccineRecords)
+                .HasForeignKey(vr => vr.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(vr => vr.Dependent)
+                .WithMany(d => d.VaccineRecords)
+                .HasForeignKey(vr => vr.DependentId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            entity.HasOne(vr => vr.Vaccine)
+                .WithMany()
+                .HasForeignKey(vr => vr.VaccineId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         // Allergy
@@ -83,7 +106,12 @@ public class MyVaccineAppDbContext : DbContext
         {
             entity.Property(a => a.Name)
                 .IsRequired()
-                .HasMaxLength(255);
+                .HasMaxLength(100);
+
+            entity.HasOne(a => a.User)
+                .WithMany(u => u.Allergies)
+                .HasForeignKey(a => a.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         });
 
         // FamilyGroup
@@ -98,9 +126,9 @@ public class MyVaccineAppDbContext : DbContext
 
 
 //builder.Services.AddDbContext<MyVaccineAppDbContext>(options =>
-    //options.UseSqlServer(
-   //     builder.Configuration.GetConnectionString("DefaultConnection")));{
- // "ConnectionStrings": {
-    //"DefaultConnection": "Server=localhost,1433;Database=MyVaccineDB;User Id=sa;Password=Abc.1234567;TrustServerCertificate=True;Encrypt=False;"
-  //}
+//options.UseSqlServer(
+//     builder.Configuration.GetConnectionString("DefaultConnection")));{
+// "ConnectionStrings": {
+//"DefaultConnection": "Server=localhost,1433;Database=MyVaccineDB;User Id=sa;Password=Abc.1234567;TrustServerCertificate=True;Encrypt=False;"
+//}
 //}
