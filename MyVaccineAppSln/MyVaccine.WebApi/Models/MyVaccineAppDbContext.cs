@@ -53,7 +53,7 @@ public class MyVaccineAppDbContext : DbContext
             entity.HasOne(d => d.User)
                 .WithMany(u => u.Dependents)
                 .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // VaccineCategory
@@ -88,17 +88,17 @@ public class MyVaccineAppDbContext : DbContext
             entity.HasOne(vr => vr.User)
                 .WithMany(u => u.VaccineRecords)
                 .HasForeignKey(vr => vr.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(vr => vr.Dependent)
                 .WithMany(d => d.VaccineRecords)
                 .HasForeignKey(vr => vr.DependentId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
 
             entity.HasOne(vr => vr.Vaccine)
                 .WithMany()
                 .HasForeignKey(vr => vr.VaccineId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // Allergy
@@ -111,7 +111,7 @@ public class MyVaccineAppDbContext : DbContext
             entity.HasOne(a => a.User)
                 .WithMany(u => u.Allergies)
                 .HasForeignKey(a => a.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         });
 
         // FamilyGroup
@@ -123,12 +123,3 @@ public class MyVaccineAppDbContext : DbContext
         });
     }
 }
-
-
-//builder.Services.AddDbContext<MyVaccineAppDbContext>(options =>
-//options.UseSqlServer(
-//     builder.Configuration.GetConnectionString("DefaultConnection")));{
-// "ConnectionStrings": {
-//"DefaultConnection": "Server=localhost,1433;Database=MyVaccineDB;User Id=sa;Password=Abc.1234567;TrustServerCertificate=True;Encrypt=False;"
-//}
-//}

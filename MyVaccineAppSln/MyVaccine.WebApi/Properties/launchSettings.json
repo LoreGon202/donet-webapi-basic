@@ -1,23 +1,22 @@
-﻿{
-  "$schema": "https://json.schemastore.org/launchsettings.json",
+{
   "profiles": {
     "http": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "http://localhost:5237",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5237"
     },
     "https": {
       "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7205;http://localhost:5237",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MY_VACCINE_CONNETION_STRING": " Server=localhost,1433;Database=MyVaccineDB;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7205;http://localhost:5237"
     }
-  }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
 }
