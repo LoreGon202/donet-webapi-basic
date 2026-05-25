@@ -1,46 +1,34 @@
 using System;
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MyVaccine.WebApi.Models;
+using MyVaccine.WebApi.Configurations;
 
 namespace MyVaccine.WebApi
 {
-    public static class Program
+    public class Program
     {
-        public static WebApplication CreateApp(string[] args)
+        public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            // Controllers
             builder.Services.AddControllers();
 
+            // Swagger
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
-            // DATABASE
+                                                               http://localhost:5237/swagger
+            // Database
             builder.Services.SetDatabaseConfiguration(builder.Configuration);
 
-            // JWT AUTH
-            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(
-                       Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
-                    };
-                });
+            // Authentication JWT
+            builder.Services.SetMyVaccioneAuthConfiguration();
 
             var app = builder.Build();
 
+            // Swagger
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -49,13 +37,13 @@ namespace MyVaccine.WebApi
 
             app.UseHttpsRedirection();
 
-            // IMPORTANTE: ORDEN CORRECTO
+            // Authentication
             app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
 
-            return app;
+            app.Run();
         }
     }
 
@@ -70,8 +58,10 @@ namespace MyVaccine.WebApi
                 ?? configuration.GetConnectionString("DefaultConnection");
 
             if (string.IsNullOrWhiteSpace(connectionString))
+            {
                 throw new InvalidOperationException(
                     "Connection string 'DefaultConnection' not found.");
+            }
 
             services.AddDbContext<MyVaccineAppDbContext>(options =>
                 options.UseSqlServer(connectionString));
