@@ -1,0 +1,23 @@
+{
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "http://localhost:5237"
+    },
+    "https": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "MY_VACCINE_CONNETION_STRING": " Server=localhost,1433;Database=MyVaccineDB;User Id=sa;Password=YourStrong@Passw0rd;TrustServerCertificate=True",
+        "JWT_KEY": "5y5esetdtutyfv8b9hu78jm"
+      },
+      "dotnetRunMessages": true,
+      "applicationUrl": "https://localhost:7205;http://localhost:5237"
+    }
+  },
+  "$schema": "https://json.schemastore.org/launchsettings.json"
+}
