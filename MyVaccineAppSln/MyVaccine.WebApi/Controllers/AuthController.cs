@@ -17,15 +17,26 @@ namespace MyVaccine.WebApi.Controllers
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequestDto model)
-
         {
+            if (model == null)
+                return BadRequest("Invalid request.");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var user = new IdentityUser { UserName = model.Username, Email = model.Email };
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
                 return Ok(new { Message = "User registered successfully" });
             }
-            return BadRequest(result.Errors);
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return BadRequest(ModelState);
         }
     }
 }
